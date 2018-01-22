@@ -16,6 +16,7 @@ namespace Examples
 		public void Run()
 		{
 			_collider = gameObject.GetComponentInHierarchy< Collider >( _includeInactive );
+
 			if(_collider != null)
 			{
 				Debug.Log( "Collider found!" );

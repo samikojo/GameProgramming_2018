@@ -16,6 +16,13 @@ namespace TankGame
 			var input = ReadInput();
 			Mover.Turn( input.x );
 			Mover.Move( input.z );
+
+			// TODO: Refactor me! Extract method.
+			bool shoot = Input.GetButton( "Fire1" );
+			if ( shoot )
+			{
+				Weapon.Shoot();
+			}
 		}
 
 		private Vector3 ReadInput()

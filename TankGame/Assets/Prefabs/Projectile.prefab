@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135468815924357788}
   - component: {fileID: 23381694816526434}
   - component: {fileID: 114485396596199352}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,6 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8577ae3353ab45e898cf5ab3dfeeef3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damage: 10
+  _shootingForce: 25
+  _explosionForce: 50
+  _explosionRadius: 5
 --- !u!135 &135468815924357788
 SphereCollider:
   m_ObjectHideFlags: 1

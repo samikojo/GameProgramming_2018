@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ namespace TankGame
 		// The list containing all the objects in this pool.
 		private List< T > _pool;
 
+		private Action< T > _initMethod;
+
 		public Pool(int poolSize, bool shouldGrow, T prefab)
 		{
 			_poolSize = poolSize;
@@ -34,6 +37,16 @@ namespace TankGame
 			}
 		}
 
+		public Pool( int poolSize, bool shouldGrow, T prefab, Action< T > initMethod ) 
+			: this(poolSize, shouldGrow, prefab)
+		{
+			_initMethod = initMethod;
+			foreach ( var item in _pool )
+			{
+				_initMethod( item );
+			}
+		}
+
 		/// <summary>
 		/// Adds an object to the pool.
 		/// </summary>
@@ -42,7 +55,7 @@ namespace TankGame
 		private T AddObject( bool isActive = false )
 		{
 			// Instantiate pooled objects under this parent.
-			T component = Object.Instantiate( _objectPrefab );
+			T component = UnityEngine.Object.Instantiate( _objectPrefab );
 
 			if ( isActive )
 			{
