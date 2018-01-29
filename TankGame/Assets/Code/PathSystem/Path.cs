@@ -124,7 +124,9 @@ namespace TankGame.WaypointSystem
 		{
 			Waypoint nextWaypoint = direction == Direction.Forward
 				? Waypoints[ ++currentWaypointIndex % Waypoints.Count ]
-				: Waypoints[ ((--currentWaypointIndex >= 0) ? currentWaypointIndex : Waypoints.Count - 1) % Waypoints.Count ];
+				: Waypoints[ ( ( --currentWaypointIndex >= 0 )
+					             ? currentWaypointIndex
+					             : Waypoints.Count - 1 ) % Waypoints.Count ];
 			return nextWaypoint;
 		}
 
