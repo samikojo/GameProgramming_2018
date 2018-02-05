@@ -9,9 +9,21 @@ namespace TankGame
 {
 	public class EnemyUnit : Unit
 	{
+		[SerializeField]
+		private float _detectEnemyDistance;
+
+		[SerializeField]
+		private float _shootingDistance;
+
 		private IList<AIStateBase> _states = new List< AIStateBase >();
 
 		public AIStateBase CurrentState { get; private set; }
+		// How far the enemy can "see" the player.
+		public float DetectEnemyDistance { get { return _detectEnemyDistance; } }
+		// The distance the enemy shoots the player.
+		public float ShootingDistance { get { return _shootingDistance; } }
+		// The player unit this enemy is trying to shoot.
+		public PlayerUnit Target { get; set; }
 
 		public override void Init()
 		{
@@ -47,7 +59,7 @@ namespace TankGame
 			AIStateBase state = GetStateByType( targetState );
 			if ( state != null )
 			{
-				CurrentState.StateDecativating();
+				CurrentState.StateDeactivating();
 				CurrentState = state;
 				CurrentState.StateActivated();
 				result = true;

@@ -19,13 +19,19 @@ namespace TankGame.AI
 		// The target states to which we can transition from this state.
 		public IList<AIStateType> TargetStates { get; protected set; }
 		// The owner Unit of this state (Unit is the state controller class)
-		public Unit Owner { get; protected set; }
+		public EnemyUnit Owner { get; protected set; }
 
 		protected AIStateBase()
 		{
 			TargetStates = new List<AIStateType>();
 		}
 
+		/// <summary>
+		/// Add a valid state to which we can go from this state.
+		/// </summary>
+		/// <param name="targetState">The target state</param>
+		/// <returns>True, if the state was added succesfully (not present in our 
+		/// datastructure already). False otherwise.</returns>
 		public bool AddTransition( AIStateType targetState )
 		{
 			// Use the extension method AddUnique to add a target state. Will return false
@@ -64,7 +70,7 @@ namespace TankGame.AI
 		/// <summary>
 		/// Called just before state is deactivated.
 		/// </summary>
-		public virtual void StateDecativating()
+		public virtual void StateDeactivating()
 		{
 		}
 
