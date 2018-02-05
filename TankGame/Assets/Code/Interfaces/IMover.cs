@@ -13,5 +13,9 @@ namespace TankGame
 
 		void Move( float amount );
 		void Turn( float amount );
+		// Moves to the direction 'direction'.
+		void Move( Vector3 direction );
+		// Turns towards the target point in the game world.
+		void Turn( Vector3 target );
 	}
 }

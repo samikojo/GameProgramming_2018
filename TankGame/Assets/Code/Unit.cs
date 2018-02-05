@@ -20,7 +20,7 @@ namespace TankGame
 			protected set;
 		}
 
-		protected IMover Mover { get { return _mover; } }
+		public IMover Mover { get { return _mover; } }
 
 		protected void Awake()
 		{

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using TankGame.AI;
+using TankGame.WaypointSystem;
 
 namespace TankGame
 {
@@ -14,6 +15,15 @@ namespace TankGame
 
 		[SerializeField]
 		private float _shootingDistance;
+
+		[SerializeField]
+		private Path _path;
+
+		[SerializeField]
+		private float _waypointArriveDistance;
+
+		[SerializeField]
+		private Direction _direction;
 
 		private IList<AIStateBase> _states = new List< AIStateBase >();
 
@@ -36,14 +46,16 @@ namespace TankGame
 
 		private void InitStates()
 		{
-			// TODO: Implement me!
+			PatrolState patrol = 
+				new PatrolState( this, _path, _direction, _waypointArriveDistance );
+			_states.Add( patrol );
+
+			CurrentState = patrol;
+			CurrentState.StateActivated();
 		}
 
 		protected override void Update()
 		{
-			// TODO: Remove this.
-			return;
-
 			CurrentState.Update();
 		}
 

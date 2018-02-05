@@ -45,7 +45,9 @@ namespace TankGame.AI
 				//   2.1 If yes, get the next waypoint
 				CurrentWaypoint = GetWaypoint();
 				// 3. Move towards the current waypoint
+				Owner.Mover.Move( Owner.transform.forward );
 				// 4. Rotate towards the current waypoint
+				Owner.Mover.Turn( CurrentWaypoint.Position );
 			}
 		}
 
@@ -54,7 +56,7 @@ namespace TankGame.AI
 			Waypoint result = CurrentWaypoint;
 			Vector3 toWaypointVector = CurrentWaypoint.Position - Owner.transform.position;
 			float toWaypointSqr = toWaypointVector.sqrMagnitude;
-			float sqrArriveDistance = Owner.DetectEnemyDistance * Owner.DetectEnemyDistance;
+			float sqrArriveDistance = _arriveDistance * _arriveDistance;
 			if ( toWaypointSqr <= sqrArriveDistance )
 			{
 				result = _path.GetNextWaypoint( CurrentWaypoint, ref _direction );
