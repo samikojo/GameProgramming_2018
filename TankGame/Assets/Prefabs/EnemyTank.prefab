@@ -270,8 +270,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 4
   _turnSpeed: 180
-  _detectEnemyDistance: 5
-  _shootingDistance: 3
+  _startingHealth: 50
+  _detectEnemyDistance: 10
+  _shootingDistance: 6
   _path: {fileID: 0}
   _waypointArriveDistance: 0.1
   _direction: 1

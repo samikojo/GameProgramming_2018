@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using UnityEngine;
 using TankGame.AI;
 using TankGame.WaypointSystem;
@@ -32,8 +33,20 @@ namespace TankGame
 		public float DetectEnemyDistance { get { return _detectEnemyDistance; } }
 		// The distance the enemy shoots the player.
 		public float ShootingDistance { get { return _shootingDistance; } }
-		// The player unit this enemy is trying to shoot.
+		// The player unit this enemy is trying to shoot at.
 		public PlayerUnit Target { get; set; }
+		
+		public Vector3? ToTargetVector
+		{
+			get
+			{
+				if ( Target != null )
+				{
+					return Target.transform.position - transform.position;
+				}
+				return null;
+			}
+		}
 
 		public override void Init()
 		{
@@ -49,6 +62,9 @@ namespace TankGame
 			PatrolState patrol = 
 				new PatrolState( this, _path, _direction, _waypointArriveDistance );
 			_states.Add( patrol );
+
+			FollowTargetState followTarget = new FollowTargetState( this );
+			_states.Add( followTarget );
 
 			CurrentState = patrol;
 			CurrentState.StateActivated();

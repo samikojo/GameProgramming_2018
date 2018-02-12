@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TankGame.WaypointSystem;
 using TankGame.Systems;
+using TankGame.WaypointSystem;
 using UnityEngine;
 
 namespace TankGame.AI
@@ -16,7 +12,7 @@ namespace TankGame.AI
 
 		public Waypoint CurrentWaypoint { get; private set; }
 
-		public PatrolState(EnemyUnit owner, Path path, 
+		public PatrolState( EnemyUnit owner, Path path,
 			Direction direction, float arriveDistance )
 			: base()
 		{
@@ -77,9 +73,19 @@ namespace TankGame.AI
 			{
 				PlayerUnit player =
 					players[ 0 ].gameObject.GetComponentInHierarchy< PlayerUnit >();
-				Owner.Target = player;
-				Owner.PerformTransition( AIStateType.FollowTarget );
-				return true;
+
+				if ( player != null )
+				{
+					Owner.Target = player;
+					float sqrDistanceToPlayer = Owner.ToTargetVector.Value.sqrMagnitude;
+					if ( sqrDistanceToPlayer <
+					     Owner.DetectEnemyDistance * Owner.DetectEnemyDistance )
+					{
+						return Owner.PerformTransition( AIStateType.FollowTarget );
+					}
+
+					Owner.Target = null;
+				}
 			}
 			return false;
 		}
