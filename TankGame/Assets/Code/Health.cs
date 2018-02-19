@@ -10,7 +10,7 @@ namespace TankGame
 	{
 		public event Action< Unit > UnitDied;
 
-		public int CurrentHealth { get; private set; }
+		public int CurrentHealth { get; protected set; }
 		public Unit Owner { get; private set; }
 
 		public Health( Unit owner, int startingHealth )
@@ -24,16 +24,23 @@ namespace TankGame
 		/// </summary>
 		/// <param name="damage">Amount of damage</param>
 		/// <returns>True, if the unit dies. False otherwise</returns>
-		public bool TakeDamage( int damage )
+		public virtual bool TakeDamage( int damage )
 		{
 			CurrentHealth = Mathf.Clamp( CurrentHealth - damage, 0, CurrentHealth );
 			bool didDie = CurrentHealth == 0;
-			if ( didDie && UnitDied != null )
+			if ( didDie )
 			{
-				// TODO: Debug this to show how events work.
-				UnitDied( Owner );
+				RaiseUnitDiedEvent();
 			}
 			return didDie;
+		}
+
+		protected void RaiseUnitDiedEvent()
+		{
+			if ( UnitDied != null )
+			{
+				UnitDied( Owner );
+			}
 		}
 	}
 }
