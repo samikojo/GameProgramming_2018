@@ -13,5 +13,15 @@ namespace TankGame.Persistence
 		{
 			_persistence = persistence;
 		}
+
+		public void Save( GameData data )
+		{
+			_persistence.Save( data );
+		}
+
+		public GameData Load()
+		{
+			return _persistence.Load< GameData >();
+		}
 	}
 }
