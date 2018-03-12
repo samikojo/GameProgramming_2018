@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -24,9 +25,20 @@ namespace TankGame.Persistence
 
 		public void Save< T >( T data )
 		{
+			if ( File.Exists( FilePath ) )
+			{
+				File.Delete( FilePath );
+			}
 			using ( FileStream stream = File.OpenWrite( FilePath ) )
 			{
 				BinaryFormatter bf = new BinaryFormatter();
+
+				var surrogateSelector = new SurrogateSelector();
+				Vector3Surrogate v3ss = new Vector3Surrogate();
+				surrogateSelector.AddSurrogate( typeof(Vector3), 
+					new StreamingContext(StreamingContextStates.All), v3ss );
+				bf.SurrogateSelector = surrogateSelector;
+
 				bf.Serialize( stream, data );
 				// Calling the stream.Close() is not nesessary when using the 'using' statement.
 				// When the execution leaves the stream's scope, the Dispose method (which
@@ -50,6 +62,10 @@ namespace TankGame.Persistence
 				{
 					BinaryFormatter bf = new BinaryFormatter();
 					data = (T) bf.Deserialize( stream );
+				}
+				catch ( SerializationException e )
+				{
+					Debug.LogError( "Serialization failed!" );
 				}
 				catch ( Exception e )
 				{

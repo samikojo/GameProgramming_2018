@@ -38,7 +38,7 @@ namespace TankGame
 
 		private IMover _mover;
 
-		[SerializeField]
+		[SerializeField, HideInInspector]
 		private int _id = -1;
 
 		public Weapon Weapon

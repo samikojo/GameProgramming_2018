@@ -59,7 +59,7 @@ namespace TankGame
 				AddUnit( unit );
 			}
 
-			_saveSystem = new SaveSystem( new JSONPersistence( SavePath ) );
+			_saveSystem = new SaveSystem( new BinaryPersitence( SavePath ) );
 		}
 
 		protected void Update()

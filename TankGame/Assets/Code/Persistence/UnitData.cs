@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace TankGame.Persistence
 {
@@ -7,7 +8,7 @@ namespace TankGame.Persistence
 	{
 		public int Id;
 		public int Health;
-		public SerializableVector3 Position;
+		public Vector3 Position;
 		public float YRotation;
 	}
 }
