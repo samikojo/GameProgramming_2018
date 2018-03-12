@@ -57,11 +57,6 @@ namespace TankGame
 			private set { _id = value; }
 		}
 
-		protected void Awake()
-		{
-			Init();
-		}
-
 		protected void OnDestroy()
 		{
 			Health.UnitDied -= HandleUnitDied;

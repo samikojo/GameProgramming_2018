@@ -35,8 +35,8 @@ namespace TankGame.Persistence
 
 				var surrogateSelector = new SurrogateSelector();
 				Vector3Surrogate v3ss = new Vector3Surrogate();
-				surrogateSelector.AddSurrogate( typeof(Vector3), 
-					new StreamingContext(StreamingContextStates.All), v3ss );
+				surrogateSelector.AddSurrogate( typeof( Vector3 ),
+					new StreamingContext( StreamingContextStates.All ), v3ss );
 				bf.SurrogateSelector = surrogateSelector;
 
 				bf.Serialize( stream, data );
@@ -61,11 +61,18 @@ namespace TankGame.Persistence
 				try
 				{
 					BinaryFormatter bf = new BinaryFormatter();
+
+					var surrogateSelector = new SurrogateSelector();
+					Vector3Surrogate v3ss = new Vector3Surrogate();
+					surrogateSelector.AddSurrogate( typeof( Vector3 ),
+						new StreamingContext( StreamingContextStates.All ), v3ss );
+					bf.SurrogateSelector = surrogateSelector;
+
 					data = (T) bf.Deserialize( stream );
 				}
 				catch ( SerializationException e )
 				{
-					Debug.LogError( "Serialization failed!" );
+					Debug.LogError( "Deserialization failed!" );
 				}
 				catch ( Exception e )
 				{

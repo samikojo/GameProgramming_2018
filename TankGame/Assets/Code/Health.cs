@@ -1,16 +1,28 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace TankGame
 {
 	public class Health
 	{
-		public event Action< Unit > UnitDied;
+		private int _currentHealth;
 
-		public int CurrentHealth { get; protected set; }
+		public event Action< Unit > UnitDied;
+		public event Action< Unit, int > HealthChanged;
+
+		public int CurrentHealth
+		{
+			get { return _currentHealth; }
+			protected set
+			{
+				_currentHealth = value;
+				// HealthChanged event is raised every time the CurrentHealth property is set.
+				if ( HealthChanged != null )
+				{
+					HealthChanged( Owner, _currentHealth );
+				}
+			}
+		}
 		public Unit Owner { get; private set; }
 
 		public Health( Unit owner, int startingHealth )

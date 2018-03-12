@@ -53,6 +53,9 @@ namespace TankGame
 
 		private void Init()
 		{
+			var UI = FindObjectOfType< UI.UI >();
+			UI.Init();
+
 			Unit[] allUnits = FindObjectsOfType< Unit >();
 			foreach ( Unit unit in allUnits )
 			{
@@ -79,6 +82,8 @@ namespace TankGame
 
 		public void AddUnit( Unit unit )
 		{
+			unit.Init();
+
 			if ( unit is EnemyUnit )
 			{
 				_enemyUnit.Add( unit );
@@ -89,6 +94,9 @@ namespace TankGame
 			{
 				_playerUnit = unit;
 			}
+
+			// Add unit's health to the UI.
+			UI.UI.Current.HealthUI.AddUnit( unit );
 		}
 
 		public void Save()
