@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using TankGame.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +12,12 @@ namespace TankGame.UI
 		// The component which draws the text to the UI.
 		private Text _text;
 
-		public bool IsEnemy { get { return _unit != null && _unit is EnemyUnit; } }
+		private ISubscription< UnitDiedMessage > _unitDiedSubscription;
+
+		public bool IsEnemy
+		{
+			get { return _unit != null && _unit is EnemyUnit; }
+		}
 
 		protected void OnDestroy()
 		{
@@ -30,19 +32,29 @@ namespace TankGame.UI
 			// Green text will be used otherwise.
 			_text.color = IsEnemy ? Color.red : Color.green;
 			_unit.Health.HealthChanged += OnUnitHealthChanged;
-			_unit.Health.UnitDied += OnUnitDied;
+			//_unit.Health.UnitDied += OnUnitDied;
+			_unitDiedSubscription =
+				GameManager.Instance.MessageBus.Subscribe< UnitDiedMessage >( OnUnitDied );
 			SetText( _unit.Health.CurrentHealth );
 		}
 
-		private void OnUnitDied( Unit obj )
+		private void OnUnitDied( UnitDiedMessage msg )
 		{
-			UnregisterEventListeners();
+			if ( msg.DeadUnit == _unit )
+				UnregisterEventListeners();
 		}
+
+		//private void OnUnitDied(Unit obj)
+		//{
+		//	UnregisterEventListeners();
+		//}
 
 		private void UnregisterEventListeners()
 		{
 			_unit.Health.HealthChanged -= OnUnitHealthChanged;
-			_unit.Health.UnitDied -= OnUnitDied;
+			if ( !GameManager.IsClosing )
+				GameManager.Instance.MessageBus.Unsubscribe( _unitDiedSubscription );
+			//_unit.Health.UnitDied -= OnUnitDied;
 		}
 
 		private void OnUnitHealthChanged( Unit unit, int health )
