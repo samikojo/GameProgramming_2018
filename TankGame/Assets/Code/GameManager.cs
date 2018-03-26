@@ -4,6 +4,7 @@ using System.Linq;
 using TankGame.Persistence;
 using UnityEngine;
 using TankGame.Messaging;
+using TankGame.Localization;
 
 namespace TankGame
 {
@@ -63,6 +64,8 @@ namespace TankGame
 
 		private void Init()
 		{
+			Localization.Localization.LoadLanguage( LangCode.EN );
+
 			IsClosing = false;
 
 			MessageBus = new MessageBus();
