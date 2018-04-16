@@ -1,9 +1,12 @@
 using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace TankGame
 {
-	public class Health
+	public class Health : INotifyPropertyChanged
 	{
 		private int _currentHealth;
 
@@ -21,6 +24,7 @@ namespace TankGame
 				{
 					HealthChanged( Owner, _currentHealth );
 				}
+				OnPropertyChanged( () => CurrentHealth );
 			}
 		}
 		public Unit Owner { get; private set; }
@@ -59,6 +63,18 @@ namespace TankGame
 		{
 			// TODO: What if the unit is dead
 			CurrentHealth = health;
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		[NotifyPropertyChangedInvocator]
+		protected virtual void OnPropertyChanged< T >( Expression< Func< T > > propertyLambda )
+		{
+			if ( PropertyChanged != null )
+			{
+				PropertyChanged( this,
+					new PropertyChangedEventArgs( Utils.Utils.GetPropertyName( propertyLambda ) ) );
+			}
 		}
 	}
 }

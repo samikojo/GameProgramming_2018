@@ -1,1 +1,1 @@
-﻿{"_keys":["save","load","test"],"_values":["Tallenna","Lataa","Testaan"],"_langCode":2}
+﻿{"_keys":["save","load","test","start","health","player","enemy"],"_values":["Tallenna","Lataa","Testaan","Aloita","{0} helat: {1}","Pelaaja","Vihu"],"_langCode":2}

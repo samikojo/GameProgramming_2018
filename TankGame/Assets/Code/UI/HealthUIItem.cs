@@ -1,6 +1,8 @@
+using TankGame.Localization;
 using TankGame.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
+using l10n = TankGame.Localization.Localization;
 
 namespace TankGame.UI
 {
@@ -11,6 +13,8 @@ namespace TankGame.UI
 
 		// The component which draws the text to the UI.
 		private Text _text;
+
+		private const string HealthKey = "health";
 
 		private ISubscription< UnitDiedMessage > _unitDiedSubscription;
 
@@ -26,6 +30,7 @@ namespace TankGame.UI
 
 		public void Init( Unit unit )
 		{
+			l10n.LanguageLoaded += OnLanguageLoaded;
 			_unit = unit;
 			_text = GetComponentInChildren< Text >();
 			// If the unit is an enemy unit the color of the text will be set to red.
@@ -38,10 +43,18 @@ namespace TankGame.UI
 			SetText( _unit.Health.CurrentHealth );
 		}
 
+		private void OnLanguageLoaded( LangCode currentLang )
+		{
+			SetText( _unit.Health.CurrentHealth );
+		}
+
 		private void OnUnitDied( UnitDiedMessage msg )
 		{
 			if ( msg.DeadUnit == _unit )
+			{
 				UnregisterEventListeners();
+				gameObject.SetActive( false );
+			}
 		}
 
 		//private void OnUnitDied(Unit obj)
@@ -51,6 +64,7 @@ namespace TankGame.UI
 
 		private void UnregisterEventListeners()
 		{
+			l10n.LanguageLoaded -= OnLanguageLoaded;
 			_unit.Health.HealthChanged -= OnUnitHealthChanged;
 			if ( !GameManager.IsClosing )
 				GameManager.Instance.MessageBus.Unsubscribe( _unitDiedSubscription );
@@ -66,7 +80,13 @@ namespace TankGame.UI
 		{
 			// C# 6 syntax for the same thing.
 			//_text.text = $"{_unit.name} health: {health}";
-			_text.text = string.Format( "{0} health: {1}", _unit.name, health );
+
+			string translation = l10n.CurrentLanguage.GetTranslation( HealthKey );
+
+			string unitKey = IsEnemy ? "enemy" : "player";
+			string unitTranslation = l10n.CurrentLanguage.GetTranslation( unitKey );
+
+			_text.text = string.Format( translation, unitTranslation, health );
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace TankGame.Localization
 		public const string LocalizationFolderName = "Localization";
 		public const string FileExtension = ".json";
 
-		public static event Action LanguageLoaded;
+		public static event Action<LangCode> LanguageLoaded;
 
 		public static string LocalizationPath
 		{
@@ -75,7 +75,7 @@ namespace TankGame.Localization
 
 			if (LanguageLoaded != null)
 			{
-				LanguageLoaded();
+				LanguageLoaded(CurrentLanguage.LanguageCode);
 			}
 		}
 

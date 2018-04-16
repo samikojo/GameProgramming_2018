@@ -19,7 +19,7 @@ namespace TankGame.UI
 			Localization.Localization.LanguageLoaded += OnLanguageLoaded;
 		}
 
-		private void OnLanguageLoaded()
+		private void OnLanguageLoaded(LangCode currentLanguage)
 		{
 			_text.text = 
 				Localization.Localization.CurrentLanguage.GetTranslation( _key );
@@ -27,7 +27,7 @@ namespace TankGame.UI
 
 		void Start()
 		{
-			OnLanguageLoaded();
+			OnLanguageLoaded(Localization.Localization.CurrentLanguage.LanguageCode);
 		}
 	}
 }
